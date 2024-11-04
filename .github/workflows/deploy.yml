@@ -86,6 +86,11 @@ jobs:
             mv /root/nest-server/tobe/project.tar.gz /root/nest-server/current/project.tar.gz
             cd /root/nest-server/current
             tar -xvf project.tar.gz
+            cd BE
+            npm i
+            cd
+            cd FE
             npm i
             pm2 kill
+            cd BE
             pm2 start dist/main.js --name "backend-server"
