@@ -89,7 +89,7 @@ jobs:
           script: |
             rm -rf /home/ubuntu/nest-server/current
             mkdir /home/ubuntu/nest-server/current
-            mv /home/ubuntu//nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
+            mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
             cd /home/ubuntu/nest-server/current
             tar -xvf project.tar.gz
             cd BE
