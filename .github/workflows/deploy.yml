@@ -65,7 +65,7 @@ jobs:
           echo "Created archive with contents:"
           tar -tvf project.tar.gz
 
-      - name: Rsync로 EC2에 빌드된 파일 전송하기 
+      - name: Rsync로 EC2에 빌드된 파일 전송하기
         run: |
           sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
             project.tar.gz \
@@ -92,3 +92,9 @@ jobs:
             pm2 kill
             cd /home/ubuntu/nest-server/current/BE
             pm2 start dist/main.js --name "backend-server"
+
+#            todo: # FrontEnd 배포
+#            # Frontend 배포
+#            echo "Deploying Frontend..."
+#            sudo rm -rf /var/www/html/*
+#            sudo cp -r ../FE/dist/* /var/www/html/
