@@ -71,7 +71,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: project.tar.gz
-          target: /root/nest-server/tobe
+          target: /home/ubuntu/nest-server/tobe
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -81,10 +81,10 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            rm -rf /root/nest-server/current
-            mkdir /root/nest-server/current
-            mv /root/nest-server/tobe/project.tar.gz /root/nest-server/current/project.tar.gz
-            cd /root/nest-server/current
+            rm -rf /home/ubuntu/nest-server/current
+            mkdir /home/ubuntu/nest-server/current
+            mv /home/ubuntu//nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
+            cd /home/ubuntu/nest-server/current
             tar -xvf project.tar.gz
             cd BE
             npm i
