@@ -55,11 +55,10 @@ jobs:
             BE/dist \
             BE/package.json \
             BE/package-lock.json \
-            BE/.env \
-            FE/build \
+            .env \
+            FE/dist \
             FE/package.json \
             FE/package-lock.json \
-            FE/.env
 
           # 압축 파일 내용 확인 (디버깅용)
           echo "Created archive with contents:"
