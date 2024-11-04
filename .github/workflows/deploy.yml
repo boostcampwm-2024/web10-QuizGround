@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     #    defaults:
     #      run:
-    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정
+    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정 ##
 
     steps:
       - name: Github Repository 파일 불러오기
