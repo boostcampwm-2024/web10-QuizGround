@@ -2,15 +2,11 @@ name: Deploy To EC2
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main", "dev-be", "dev-fe"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    #    defaults:
-    #      run:
-    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정
 
     steps:
       - name: Github Repository 파일 불러오기
@@ -33,9 +29,14 @@ jobs:
         run: |
           echo '${{ secrets.ENV }}' > .env
 
-      - name: 테스트 코드 실행
+      - name: BE 테스트 코드 실행
         working-directory: ./BE
         run: npm run test
+
+#        todo: FE 테스트 코드 실행
+#      - name: FE 테스트 코드 실행
+#        working-directory: ./FE
+#        run: npm run test
 
       - name: BE 빌드
         working-directory: ./BE
@@ -64,16 +65,7 @@ jobs:
           echo "Created archive with contents:"
           tar -tvf project.tar.gz
 
-#      - name: SCP로 EC2에 빌드된 파일 전송하기
-#        uses: appleboy/scp-action@v0.1.7
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USERNAME }}
-#          key: ${{ secrets.EC2_PRIVATE_KEY }}
-#          source: project.tar.gz
-#          target: /home/ubuntu/nest-server/tobe
-
-      - name: Rsync로 EC2에 빌드된 파일 전송하기 #
+      - name: Rsync로 EC2에 빌드된 파일 전송하기 
         run: |
           sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
             project.tar.gz \
