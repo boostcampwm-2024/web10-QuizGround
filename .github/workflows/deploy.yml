@@ -21,7 +21,12 @@ jobs:
         with:
           node-version: "20"
 
-      - name: 의존성(라이브러리) 설치
+      - name: BE 의존성 설치
+        working-directory: ./BE
+        run: npm ci
+
+      - name: FE 의존성 설치
+        working-directory: ./FE
         run: npm ci
 
       - name: .env 파일 만들기
@@ -29,9 +34,15 @@ jobs:
           echo '${{ secrets.ENV }}' > .env
 
       - name: 테스트 코드 실행
+        working-directory: ./BE
         run: npm run test
 
-      - name: 빌드
+      - name: BE 빌드
+        working-directory: ./BE
+        run: npm run build
+
+      - name: FE 빌드
+        working-directory: ./FE
         run: npm run build
 
       - name: github-action 컴퓨터에서 압축하기
