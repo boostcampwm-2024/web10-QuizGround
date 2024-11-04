@@ -73,7 +73,7 @@ jobs:
 #          source: project.tar.gz
 #          target: /home/ubuntu/nest-server/tobe
 
-      - name: Rsync로 EC2에 빌드된 파일 전송하기 
+      - name: Rsync로 EC2에 빌드된 파일 전송하기 #
         run: |
           sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
             project.tar.gz \
