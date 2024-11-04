@@ -92,11 +92,11 @@ jobs:
             mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
             cd /home/ubuntu/nest-server/current
             tar -xvf project.tar.gz
-            cd BE
+            cd /home/ubuntu/nest-server/current/BE
             npm i
             cd
-            cd FE
+            cd /home/ubuntu/nest-server/current/FE
             npm i
             pm2 kill
-            cd BE
+            cd /home/ubuntu/nest-server/current/BE
             pm2 start dist/main.js --name "backend-server"
