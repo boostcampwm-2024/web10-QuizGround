@@ -64,14 +64,20 @@ jobs:
           echo "Created archive with contents:"
           tar -tvf project.tar.gz
 
-      - name: SCP로 EC2에 빌드된 파일 전송하기
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: project.tar.gz
-          target: /home/ubuntu/nest-server/tobe
+#      - name: SCP로 EC2에 빌드된 파일 전송하기
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.EC2_USERNAME }}
+#          key: ${{ secrets.EC2_PRIVATE_KEY }}
+#          source: project.tar.gz
+#          target: /home/ubuntu/nest-server/tobe
+
+      - name: Rsync로 EC2에 빌드된 파일 전송하기
+        run: |
+          sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+            project.tar.gz \
+            ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/nest-server/tobe/
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
