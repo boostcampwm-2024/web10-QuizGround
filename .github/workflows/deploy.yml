@@ -1,0 +1,81 @@
+name: Deploy To EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    #    defaults:
+    #      run:
+    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정
+
+    steps:
+      - name: Github Repository 파일 불러오기
+        uses: actions/checkout@v4
+
+      - name: Node 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 의존성(라이브러리) 설치
+        run: npm ci
+
+      - name: .env 파일 만들기
+        run: |
+          echo '${{ secrets.ENV }}' > .env
+
+      - name: 테스트 코드 실행
+        run: npm run test
+
+      - name: 빌드
+        run: npm run build
+
+      - name: github-action 컴퓨터에서 압축하기
+        run: |
+          # 현재 위치 확인 (디버깅용)
+          pwd
+
+          # BE와 FE 모든 필요 파일들을 함께 압축
+          tar -czvf project.tar.gz \
+            BE/dist \
+            BE/package.json \
+            BE/package-lock.json \
+            BE/.env \
+            FE/build \
+            FE/package.json \
+            FE/package-lock.json \
+            FE/.env
+
+          # 압축 파일 내용 확인 (디버깅용)
+          echo "Created archive with contents:"
+          tar -tvf project.tar.gz
+
+      - name: SCP로 EC2에 빌드된 파일 전송하기
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: project.tar.gz
+          target: /root/nest-server/tobe
+
+      - name: SSH로 EC2에 접속하기
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            rm -rf /root/nest-server/current
+            mkdir /root/nest-server/current
+            mv /root/nest-server/tobe/project.tar.gz /root/nest-server/current/project.tar.gz
+            cd /root/nest-server/current
+            tar -xvf project.tar.gz
+            npm i
+            pm2 kill
+            pm2 start dist/main.js --name "backend-server"
