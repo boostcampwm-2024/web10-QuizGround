@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     #    defaults:
     #      run:
-    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정 
+    #        working-directory: ./BE  # BE 디렉토리를 작업 디렉토리로 설정
 
     steps:
       - name: Github Repository 파일 불러오기
@@ -74,7 +74,7 @@ jobs:
           target: /home/ubuntu/nest-server/tobe
 
       - name: SSH로 EC2에 접속하기
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.3 #
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
