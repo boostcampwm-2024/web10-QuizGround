@@ -66,6 +66,11 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: project.tar.gz
           target: /home/ubuntu/nest-server/tobe
+#      - name: Rsync로 EC2에 빌드된 파일 전송
+#        run: |
+#          rsync -avz -e "ssh -i ~/.ssh/id_rsa" \
+#            project.tar.gz \
+#            ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/nest-server/tobe/
 #      - name: Rsync로 EC2에 빌드된 파일 전송하기
 #        run: |
 #          sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
