@@ -2,7 +2,7 @@ name: Deploy To EC2
 
 on:
   push:
-    branches: ["main", "dev-be", "dev-fe"]
+    branches: [ "main" ]
 
 jobs:
   deploy:
