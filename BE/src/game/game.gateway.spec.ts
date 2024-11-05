@@ -1,12 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import { GameGateway } from '../src/game/game.gateway';
-import { GameService } from '../src/game/game.service';
 import { io, Socket } from 'socket.io-client';
-import socketEvents from '../src/common/constants/socket-events';
-import { CreateGameDto } from '../src/game/dto/create-game.dto';
-import { generateUniquePin } from '../src/common/utils/utils';
+import { GameGateway } from './game.gateway';
+import { GameService } from './game.service';
+import socketEvents from '../common/constants/socket-events';
+import { generateUniquePin } from '../common/utils/utils';
+
+/* disable eslint */
 
 describe('GameGateway (e2e)', () => {
   let app: INestApplication;
@@ -35,6 +36,7 @@ describe('GameGateway (e2e)', () => {
       }
     };
 
+    // 1. http(연결할때만) -> 2. ws
     client1 = io(`http://localhost:${TEST_PORT}/game`, {
       transports: ['websocket'],
       forceNew: true
@@ -72,7 +74,7 @@ describe('GameGateway (e2e)', () => {
         isPublicGame: true
       };
 
-      const response = await new Promise<{ gameId: string }>(resolve => {
+      const response = await new Promise<{ gameId: string }>((resolve) => {
         client1.once(socketEvents.CREATE_ROOM, resolve);
         client1.emit(socketEvents.CREATE_ROOM, gameConfig);
       });
@@ -97,15 +99,15 @@ describe('GameGateway (e2e)', () => {
       },
       {
         case: '최소 인원 미달',
-        config: { title: 'hello', gameMode: 'RANKING', maxPlayerCount: 0, isPublicGame: true }
+        config: { title: 'hello', gameMode: 'ranking', maxPlayerCount: 0, isPublicGame: true }
       },
       {
         case: '최대 인원 초과',
-        config: { title: 'hello', gameMode: 'RANKING', maxPlayerCount: 201, isPublicGame: true }
+        config: { title: 'hello', gameMode: 'ranking', maxPlayerCount: 201, isPublicGame: true }
       },
       {
         case: '잘못된 boolean 타입',
-        config: { title: 'hello', gameMode: 'RANKING', maxPlayerCount: 2, isPublicGame: '안녕' }
+        config: { title: 'hello', gameMode: 'ranking', maxPlayerCount: 2, isPublicGame: '안녕' }
       }
     ];
 
@@ -220,7 +222,7 @@ describe('GameGateway (e2e)', () => {
 
       // 6자리 숫자 검증
       expect(response.gameId).toBeDefined();
-      expect(response.gameId).toMatch(/^\d{6}$/);  // 정확히 6자리 숫자만
+      expect(response.gameId).toMatch(/^\d{6}$/); // 정확히 6자리 숫자만
 
       // 범위 검증 (100000-999999)
       const pinNumber = parseInt(response.gameId);
