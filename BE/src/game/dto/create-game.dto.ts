@@ -10,16 +10,17 @@ export class CreateGameDto implements GameConfig {
   title: string;
 
   @IsString()
-  @IsIn(['ranking', 'survival'])
+  @IsIn(['RANKING', 'SURVIVAL'])
   gameMode: string;
 
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(200)
-  @Type(() => Number)
   maxPlayerCount: number;
 
   @Transform(({ value }) => {
+    if (value === undefined) return true; // 기본값 설정
     if (typeof value === 'boolean') return value;
     if (value === 'true' || value === '1' || value === 1) return true;
     if (value === 'false' || value === '0' || value === 0) return false;
