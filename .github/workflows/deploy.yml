@@ -104,7 +104,7 @@ jobs:
             cd
             cd /home/ubuntu/nest-server/current/FE
             npm i
-            pm2 stop backend-server
+            pm2 stop backend-server || true
             cd /home/ubuntu/nest-server/current/BE
             pm2 start dist/main.js --name "backend-server"
 
