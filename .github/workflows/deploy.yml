@@ -48,9 +48,6 @@ jobs:
 
       - name: github-action 컴퓨터에서 압축하기
         run: |
-          # 현재 위치 확인 (디버깅용)
-          pwd
-
           # BE와 FE 모든 필요 파일들을 함께 압축
           tar -czvf project.tar.gz \
             BE/dist \
@@ -61,15 +58,11 @@ jobs:
             FE/package.json \
             FE/package-lock.json \
 
-          # 압축 파일 내용 확인 (디버깅용)
-          echo "Created archive with contents:"
-          tar -tvf project.tar.gz
-
-      - name: Rsync로 EC2에 빌드된 파일 전송하기
-        run: |
-          sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
-            project.tar.gz \
-            ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/nest-server/tobe/
+#      - name: Rsync로 EC2에 빌드된 파일 전송하기
+#        run: |
+#          sshpass -p "123456" rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+#            project.tar.gz \
+#            ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/nest-server/tobe/
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -79,6 +72,9 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
+            # rsync 실행 (로컬에서 원격으로 파일 전송)
+            rsync -avz project.tar.gz /home/ubuntu/nest-server/tobe/
+            
             rm -rf /home/ubuntu/nest-server/current
             mkdir /home/ubuntu/nest-server/current
             mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
@@ -89,7 +85,7 @@ jobs:
             cd
             cd /home/ubuntu/nest-server/current/FE
             npm i
-            pm2 kill
+            pm2 stop backend-server
             cd /home/ubuntu/nest-server/current/BE
             pm2 start dist/main.js --name "backend-server"
 
