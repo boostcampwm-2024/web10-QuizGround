@@ -55,36 +55,27 @@ jobs:
         run: |
           echo '${{ secrets.ENV }}' > .env
 
-      - name: Set up MySQL
+      - name: Debug MySQL Status
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -h127.0.0.1 -P3306 -uroot -ptest -e "
-          CREATE DATABASE IF NOT EXISTS ${{ env.DB_NAME_TEST }};
-          SHOW DATABASES;
-          "
+          echo "Docker MySQL status:"
+          docker ps -a
+          echo "Port status:"
+          netstat -tulpn | grep 3306
+          echo "MySQL logs:"
+          docker logs $(docker ps -q --filter name=mysql)
 
-          - name: Verify MySQL Connection
-            run: |
-              echo "Verifying MySQL connection..."
-              mysql -h127.0.0.1 -P3306 -uroot -ptest -e "
-                SELECT 'MySQL connection successful' AS status;
-                SHOW DATABASES;
-              "
-
-          - name: Wait for MySQL
-            run: |
-              max_retries=10
-              retries=0
-              while ! mysql -h127.0.0.1 -P3306 -uroot -ptest -e "SELECT 1" >/dev/null 2>&1; do
-                retries=$((retries + 1))
-                if [ "$retries" -ge "$max_retries" ]; then
-                  echo "Failed to connect to MySQL after $max_retries attempts"
-                  exit 1
-                fi
-                echo "Waiting for MySQL to be ready... (Attempt $retries of $max_retries)"
-                sleep 5
-              done
+      - name: Verify MySQL Connection
+        run: |
+          echo "Verifying MySQL connection..."
+          for i in {1..30}; do
+            if mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWD" --connect-timeout=10 -e "SELECT 1;" >/dev/null 2>&1; then
               echo "MySQL is ready!"
+              mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWD" -e "SHOW DATABASES;"
+              break
+            fi
+            echo "Attempt $i: Waiting for MySQL..."
+            sleep 2
+          done
 
       - name: BE 테스트 코드 실행 (unit test)
         working-directory: ./BE
