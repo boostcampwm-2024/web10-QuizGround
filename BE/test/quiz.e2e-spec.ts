@@ -63,6 +63,11 @@ describe('QuizService', () => {
     await dataSource.destroy();
   });
 
+  it('should be defined', () => {
+    expect(quizService).toBeDefined();
+    expect(dataSource).toBeDefined();
+  });
+
   describe('createQuizSet', () => {
     it('퀴즈셋을 성공적으로 생성해야 한다', async () => {
       // Given

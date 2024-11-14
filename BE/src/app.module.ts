@@ -25,9 +25,9 @@ import { QuizModule } from './quiz/quiz.module';
       type: 'mysql',
       host: process.env.DB_HOST || 'localhost',
       port: +process.env.DB_PORT || 3306,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWD,
-      database: process.env.DB_NAME,
+      username: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWD || 'test',
+      database: process.env.DB_NAME || 'test_db',
       entities: [QuizSetModel, QuizModel, QuizChoiceModel, UserModel, UserQuizArchiveModel],
       synchronize: process.env.DEV ? true : false, // 개발 모드에서만 활성화
       logging: true, // 모든 쿼리 로깅
