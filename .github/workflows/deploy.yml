@@ -23,6 +23,7 @@ jobs:
           MYSQL_USER: honux
           MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: test_db
+          DATABASE_ENDPOINT: 127.0.0.1
         ports:
           - 3306:3306
         options: >-
@@ -55,6 +56,11 @@ jobs:
       - name: .env 파일 만들기
         run: |
           echo '${{ secrets.ENV }}' > .env
+
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_NAME_TEST }};' -u${{ env.DB_USER_TEST }} -p${{ env.DB_PASSWD_TEST }}
 
       - name: Wait for MySQL
         run: |
