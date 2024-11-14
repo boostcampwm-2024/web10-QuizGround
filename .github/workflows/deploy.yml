@@ -55,28 +55,6 @@ jobs:
         run: |
           echo '${{ secrets.ENV }}' > .env
 
-      #      - name: Debug MySQL Status
-      #        run: |
-      #          echo "Docker MySQL status:"
-      #          docker ps -a
-      #          echo "Port status:"
-      #          netstat -tulpn | grep 3306
-      #          echo "MySQL logs:"
-      #          docker logs $(docker ps -q --filter name=mysql)
-      #
-      #      - name: Verify MySQL Connection
-      #        run: |
-      #          echo "Verifying MySQL connection..."
-      #          for i in {1..30}; do
-      #            if mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWD" --connect-timeout=10 -e "SELECT 1;" >/dev/null 2>&1; then
-      #              echo "MySQL is ready!"
-      #              mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWD" -e "SHOW DATABASES;"
-      #              break
-      #            fi
-      #            echo "Attempt $i: Waiting for MySQL..."
-      #            sleep 2
-      #          done
-
       - name: BE 테스트 코드 실행 (unit test)
         working-directory: ./BE
         run: npm run test
@@ -128,26 +106,19 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            #            # 환경 설정을 .bashrc에 추가
-            #            echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
-            #            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
-            #
-            #            # 환경 로드
-            #            source ~/.bashrc
-                    
-                    rm -rf /home/ubuntu/nest-server/current
-                    mkdir /home/ubuntu/nest-server/current
-                    mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
-                    cd /home/ubuntu/nest-server/current
-                    tar -xvf project.tar.gz
-                    cd /home/ubuntu/nest-server/current/BE
-                    npm i
-                    cd
-                    cd /home/ubuntu/nest-server/current/FE
-                    npm i
-                    npx pm2 stop backend-server || true
-                    cd /home/ubuntu/nest-server/current/BE
-                    npx pm2 start dist/main.js --name "backend-server"
+            rm -rf /home/ubuntu/nest-server/current
+            mkdir /home/ubuntu/nest-server/current
+            mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
+            cd /home/ubuntu/nest-server/current
+            tar -xvf project.tar.gz
+            cd /home/ubuntu/nest-server/current/BE
+            npm i
+            cd
+            cd /home/ubuntu/nest-server/current/FE
+            npm i
+            npx pm2 stop backend-server || true
+            cd /home/ubuntu/nest-server/current/BE
+            npx pm2 start dist/main.js --name "backend-server"
 
 #            todo: # FrontEnd 배포
 #            # Frontend 배포
