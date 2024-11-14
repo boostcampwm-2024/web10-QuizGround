@@ -57,22 +57,33 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE ${{ env.DB_NAME_TEST }};' -u${{ env.DB_USER_TEST }} -p${{ env.DB_PASSWD_TEST }}
+          mysql -h127.0.0.1 -P3306 -uroot -ptest -e "
+          CREATE DATABASE IF NOT EXISTS ${{ env.DB_NAME_TEST }};
+          SHOW DATABASES;
+          "
 
-      - name: Wait for MySQL
-        run: |
-          max_retries=10
-          retries=0
-          while ! mysqladmin ping -h"$DB_HOST_TEST" -P"$DB_PORT_TEST" -u"$DB_USER_TEST" -p"$DB_PASSWD_TEST" --silent; do
-            retries=$((retries + 1))
-            if [ "$retries" -ge "$max_retries" ]; then
-              echo "Failed to connect to MySQL after $max_retries attempts"
-              exit 1
-            fi
-            echo "Waiting for MySQL to be ready... (Attempt $retries of $max_retries)"
-            sleep 5
-          done
-          echo "MySQL is ready!"
+          - name: Verify MySQL Connection
+            run: |
+              echo "Verifying MySQL connection..."
+              mysql -h127.0.0.1 -P3306 -uroot -ptest -e "
+                SELECT 'MySQL connection successful' AS status;
+                SHOW DATABASES;
+              "
+
+          - name: Wait for MySQL
+            run: |
+              max_retries=10
+              retries=0
+              while ! mysql -h127.0.0.1 -P3306 -uroot -ptest -e "SELECT 1" >/dev/null 2>&1; do
+                retries=$((retries + 1))
+                if [ "$retries" -ge "$max_retries" ]; then
+                  echo "Failed to connect to MySQL after $max_retries attempts"
+                  exit 1
+                fi
+                echo "Waiting for MySQL to be ready... (Attempt $retries of $max_retries)"
+                sleep 5
+              done
+              echo "MySQL is ready!"
 
       - name: BE 테스트 코드 실행 (unit test)
         working-directory: ./BE
