@@ -128,6 +128,10 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
+            # 쉘 환경 로드
+            source ~/.bashrc
+            source ~/.profile
+            
             rm -rf /home/ubuntu/nest-server/current
             mkdir /home/ubuntu/nest-server/current
             mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
