@@ -8,7 +8,7 @@ env:
   NODE_ENV: test
   DB_HOST_TEST: localhost
   DB_PORT_TEST: 3306
-  DB_USER_TEST: honux
+  DB_USER_TEST: root
   DB_PASSWD_TEST: test
   DB_NAME_TEST: test_db
 
@@ -20,7 +20,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_USER: honux
+          MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: test_db
           DATABASE_ENDPOINT: 127.0.0.1
