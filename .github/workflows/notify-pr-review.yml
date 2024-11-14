@@ -1,12 +1,8 @@
 name: notify pr review
 
-#on:
-#  pull_request:
-#    types: [ review_requested ]
 on:
-  push:
-    branches:
-      - feature-be-#200
+  pull_request:
+    types: [ review_requested ]
 
 jobs:
   notify:
