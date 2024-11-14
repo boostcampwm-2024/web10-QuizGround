@@ -8,7 +8,6 @@ env:
   NODE_ENV: test
   DB_HOST_TEST: localhost
   DB_PORT_TEST: 3306
-  DB_USER_TEST: root
   DB_PASSWD_TEST: test
   DB_NAME_TEST: test_db
 
