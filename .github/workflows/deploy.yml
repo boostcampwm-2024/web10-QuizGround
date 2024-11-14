@@ -8,7 +8,7 @@ env:
   NODE_ENV: test
   DB_HOST_TEST: localhost
   DB_PORT_TEST: 3306
-  DB_USER_TEST: root
+  DB_USER_TEST: honux
   DB_PASSWD_TEST: test
   DB_NAME_TEST: test_db
 
@@ -20,6 +20,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
+          MYSQL_USER: honux
           MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: test_db
         ports:
@@ -57,10 +58,18 @@ jobs:
 
       - name: Wait for MySQL
         run: |
+          max_retries=10
+          retries=0
           while ! mysqladmin ping -h"$DB_HOST_TEST" -P"$DB_PORT_TEST" -u"$DB_USER_TEST" -p"$DB_PASSWD_TEST" --silent; do
-            echo "Waiting for MySQL to be ready..."
-            sleep 2
+            retries=$((retries + 1))
+            if [ "$retries" -ge "$max_retries" ]; then
+              echo "Failed to connect to MySQL after $max_retries attempts"
+              exit 1
+            fi
+            echo "Waiting for MySQL to be ready... (Attempt $retries of $max_retries)"
+            sleep 5
           done
+          echo "MySQL is ready!"
 
       - name: BE 테스트 코드 실행 (unit test)
         working-directory: ./BE

@@ -27,7 +27,7 @@ describe('QuizService', () => {
           type: 'mysql',
           host: process.env.DB_HOST_TEST || process.env.DB_HOST || 'localhost',
           port: +process.env.DB_PORT_TEST || +process.env.DB_PORT || 3306,
-          username: process.env.DB_USER_TEST || process.env.DB_USER || 'root',
+          username: process.env.DB_USER_TEST || process.env.DB_USER || 'honux',
           password: process.env.DB_PASSWD_TEST || process.env.DB_PASSWD || 'test',
           database: process.env.DB_NAME_TEST || process.env.DB_NAME || 'test_db',
           entities: [QuizSetModel, QuizModel, QuizChoiceModel, UserModel, UserQuizArchiveModel],
