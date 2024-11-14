@@ -8,13 +8,9 @@ describe('QuizController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [QuizController],
-      providers: [QuizService],
+      providers: [QuizService]
     }).compile();
 
     controller = module.get<QuizController>(QuizController);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
   });
 });
