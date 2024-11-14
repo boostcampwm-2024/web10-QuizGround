@@ -128,23 +128,26 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            # 쉘 환경 로드
-            source ~/.bashrc
-            source ~/.profile
-            
-            rm -rf /home/ubuntu/nest-server/current
-            mkdir /home/ubuntu/nest-server/current
-            mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
-            cd /home/ubuntu/nest-server/current
-            tar -xvf project.tar.gz
-            cd /home/ubuntu/nest-server/current/BE
-            npm i
-            cd
-            cd /home/ubuntu/nest-server/current/FE
-            npm i
-            pm2 stop backend-server || true
-            cd /home/ubuntu/nest-server/current/BE
-            pm2 start dist/main.js --name "backend-server"
+            #            # 환경 설정을 .bashrc에 추가
+            #            echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
+            #            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+            #
+            #            # 환경 로드
+            #            source ~/.bashrc
+                    
+                    rm -rf /home/ubuntu/nest-server/current
+                    mkdir /home/ubuntu/nest-server/current
+                    mv /home/ubuntu/nest-server/tobe/project.tar.gz /home/ubuntu/nest-server/current/project.tar.gz
+                    cd /home/ubuntu/nest-server/current
+                    tar -xvf project.tar.gz
+                    cd /home/ubuntu/nest-server/current/BE
+                    npm i
+                    cd
+                    cd /home/ubuntu/nest-server/current/FE
+                    npm i
+                    npx pm2 stop backend-server || true
+                    cd /home/ubuntu/nest-server/current/BE
+                    npx pm2 start dist/main.js --name "backend-server"
 
 #            todo: # FrontEnd 배포
 #            # Frontend 배포
