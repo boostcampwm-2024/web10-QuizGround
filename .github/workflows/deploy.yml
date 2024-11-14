@@ -16,10 +16,16 @@ jobs:
           MYSQL_DATABASE: test_db
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
       redis:
         image: redis
         ports:
           - 6379:6379
+
     steps:
       - name: Github Repository 파일 불러오기
         uses: actions/checkout@v4
@@ -40,6 +46,13 @@ jobs:
       - name: .env 파일 만들기
         run: |
           echo '${{ secrets.ENV }}' > .env
+
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
 
       - name: BE 테스트 코드 실행 (unit test)
         working-directory: ./BE
