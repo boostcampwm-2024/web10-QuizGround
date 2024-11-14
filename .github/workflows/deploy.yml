@@ -21,6 +21,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: test_db
+          MYSQL_ROOT_HOST: '%'       # 모든 호스트에서 접근 허용
         ports:
           - 3306:3306
         options: >-
