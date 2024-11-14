@@ -6,11 +6,11 @@ on:
 
 env:
   NODE_ENV: test
-  DB_HOST: localhost
-  DB_PORT: 3306
-  DB_USER: root
-  DB_PASSWORD: test
-  DB_NAME: test_db
+  DB_HOST_TEST: localhost
+  DB_PORT_TEST: 3306
+  DB_USER_TEST: root
+  DB_PASSWD_TEST: test
+  DB_NAME_TEST: test_db
 
 jobs:
   deploy:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Wait for MySQL
         run: |
-          while ! mysqladmin ping -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
+          while ! mysqladmin ping -h"$DB_HOST_TEST" -P"$DB_PORT_TEST" -u"$DB_USER_TEST" -p"$DB_PASSWD_TEST" --silent; do
             echo "Waiting for MySQL to be ready..."
             sleep 2
           done
