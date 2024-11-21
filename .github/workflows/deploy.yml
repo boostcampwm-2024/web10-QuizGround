@@ -63,7 +63,7 @@ jobs:
       #        working-directory: ./BE
       #        run: npm run test:e2e
 
-      #        todo: FE 테스트 코드 실행
+      #        todo: FE 테스트 코드 실행 2
       #      - name: FE 테스트 코드 실행
       #        working-directory: ./FE
       #        run: npm run test
