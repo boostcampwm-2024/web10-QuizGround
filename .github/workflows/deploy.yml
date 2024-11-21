@@ -2,7 +2,7 @@ name: Deploy To EC2
 
 on:
   push:
-    branches: [ "release", "feature-be-#229" ]
+    branches: [ "release" ]
 
 env:
   NODE_ENV: test
