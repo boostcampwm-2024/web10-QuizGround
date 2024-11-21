@@ -20,7 +20,7 @@ export class GameActivityInterceptor implements NestInterceptor {
     const data = context.switchToWs().getData();
     if (data.gameId) {
       await this.gameRoomService.updateRoomActivity(data.gameId);
-      this.logger.debug(`Activity updated for room ${data.gameId} after ${Date.now() - before}ms`);
+      this.logger.debug(`방 ${data.gameId} 활동시간 갱신 완료 / after ${Date.now() - before}ms`);
     }
 
     return of(result);
