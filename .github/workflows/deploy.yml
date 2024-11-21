@@ -55,13 +55,13 @@ jobs:
         run: |
           echo '${{ secrets.ENV }}' > .env
 
-      #      - name: BE 테스트 코드 실행 (unit test)
-      #        working-directory: ./BE
-      #        run: npm run test
+      - name: BE 테스트 코드 실행 (unit test)
+        working-directory: ./BE
+        run: npm run test
 
-      #      - name: BE 테스트 코드 실행2 (e2e test)
-      #        working-directory: ./BE
-      #        run: npm run test:e2e
+      - name: BE 테스트 코드 실행2 (e2e test)
+        working-directory: ./BE
+        run: npm run test:e2e
 
       #        todo: FE 테스트 코드 실행 2
       #      - name: FE 테스트 코드 실행
