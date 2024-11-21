@@ -2,7 +2,7 @@ name: Deploy To EC2
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "release", "feature-be-#229" ]
 
 env:
   NODE_ENV: test
@@ -118,7 +118,7 @@ jobs:
             npm i
             npx pm2 stop backend-server || true
             cd /home/ubuntu/nest-server/current/BE
-            npx pm2 start dist/main.js --name "backend-server"
+            npx pm2 start dist/src/main.js --name "backend-server"
 
 #            todo: # FrontEnd 배포
 #            # Frontend 배포

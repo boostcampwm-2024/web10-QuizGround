@@ -27,11 +27,6 @@ import { QuizSetReadService } from '../../src/quiz-set/service/quiz-set-read.ser
 import { QuizSetUpdateService } from '../../src/quiz-set/service/quiz-set-update.service';
 import { QuizSetDeleteService } from '../../src/quiz-set/service/quiz-set-delete.service';
 import { ExceptionMessage } from '../../src/common/constants/exception-message';
-import { RedisSubscriberService } from '../../src/common/redis/redis-subscriber.service';
-import { ScoringSubscriber } from '../../src/common/redis/subscribers/scoring.subscriber';
-import { TimerSubscriber } from '../../src/common/redis/subscribers/timer.subscriber';
-import { RoomSubscriber } from '../../src/common/redis/subscribers/room.subscriber';
-import { PlayerSubscriber } from '../../src/common/redis/subscribers/player.subscriber';
 import { RoomCleanupSubscriber } from '../../src/game/redis/subscribers/room.cleanup.subscriber';
 import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from '../../src/auth/auth.module';
@@ -39,6 +34,11 @@ import { WsJwtAuthGuard } from '../../src/auth/guard/ws-jwt-auth.guard';
 import { JwtStrategy } from '../../src/auth/guard/jwt.strategy';
 import { AuthService } from '../../src/auth/auth.service';
 import { UserService } from '../../src/user/user.service';
+import { ScoringSubscriber } from '../../src/game/redis/subscribers/scoring.subscriber';
+import { RedisSubscriberService } from '../../src/game/redis/redis-subscriber.service';
+import { TimerSubscriber } from '../../src/game/redis/subscribers/timer.subscriber';
+import { RoomSubscriber } from '../../src/game/redis/subscribers/room.subscriber';
+import { PlayerSubscriber } from '../../src/game/redis/subscribers/player.subscriber';
 
 /*disable eslint*/
 const mockHttpService = {
