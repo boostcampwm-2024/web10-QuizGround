@@ -26,6 +26,10 @@ const CategoriesEnum = Object.freeze({
 @Entity('quiz_set')
 export class QuizSetModel extends BaseModel {
   @Column()
+  @Index({
+    fulltext: true,
+    parser: 'ngram' // ngram 파서 사용
+  }) // Full Text Search 인덱스 추가
   title: string;
 
   @Column({ name: 'user_id' })

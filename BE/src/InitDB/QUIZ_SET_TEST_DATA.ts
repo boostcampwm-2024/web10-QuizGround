@@ -175,7 +175,7 @@ export const QUIZ_SET_TEST_DATA = [
   },
   {
     title: '영어 문법 테스트',
-    category: 'ENGLISH',
+    category: 'LANGUAGE',
     quizList: [
       {
         quiz: '다음 중 현재완료 시제는?',

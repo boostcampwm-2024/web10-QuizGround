@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { QuizModel } from './quiz.entity';
 import { BaseModel } from '../../common/entity/base.entity';
 
@@ -11,6 +11,10 @@ export class QuizChoiceModel extends BaseModel {
   isAnswer: boolean;
 
   @Column({ name: 'choice_content', type: 'text' })
+  @Index({
+    fulltext: true,
+    parser: 'ngram'
+  })
   choiceContent: string;
 
   @Column({ name: 'choice_order', type: 'integer' })

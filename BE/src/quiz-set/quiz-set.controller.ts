@@ -44,13 +44,16 @@ export class QuizSetController {
     @Query('take', new ParseIntOrDefault(10)) take: number,
     @Query('search', new DefaultValuePipe('')) search: string
   ) {
+    const start = Date.now();
     const result = await this.quizService.findAllWithQuizzesAndChoices(
       category,
       cursor,
       take,
       search
     );
-    this.logger.verbose(`퀴즈셋 목록 조회: ${result}`);
+    const end = Date.now();
+    this.logger.verbose(`퀴즈셋 목록 조회: ${result}, ${end - start}ms`);
+    // this.logger.verbose(`퀴즈셋 목록 조회: ${result}`);
     return result;
   }
 
