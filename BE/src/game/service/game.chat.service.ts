@@ -9,16 +9,18 @@ import { Namespace } from 'socket.io';
 import { TraceClass } from '../../common/interceptor/SocketEventLoggerInterceptor';
 import { SurvivalStatus } from '../../common/constants/game';
 import { MetricService } from '../../metric/metric.service';
+import { createBatchProcessor } from './BatchProcessor';
 
 @TraceClass()
 @Injectable()
 export class GameChatService {
   private readonly logger = new Logger(GameChatService.name);
+  private chatProcessor: ReturnType<typeof createBatchProcessor>;
 
   constructor(
     @InjectRedis() private readonly redis: Redis,
     private readonly gameValidator: GameValidator,
-    private metricService: MetricService,
+    private metricService: MetricService
   ) {}
 
   async chatMessage(chatMessage: ChatMessageDto, clientId: string) {
@@ -49,6 +51,9 @@ export class GameChatService {
   }
 
   async subscribeChatEvent(server: Namespace) {
+    this.chatProcessor = createBatchProcessor(server, SocketEvents.CHAT_MESSAGE);
+    this.chatProcessor.startProcessing(50); // 채팅은 더 빠른 업데이트가 필요할 수 있어서 50ms
+
     const chatSubscriber = this.redis.duplicate();
     chatSubscriber.psubscribe('chat:*');
 
@@ -63,7 +68,7 @@ export class GameChatService {
 
       // 생존한 사람이라면 전체 브로드캐스팅
       if (isAlivePlayer === SurvivalStatus.ALIVE) {
-        server.to(gameId).emit(SocketEvents.CHAT_MESSAGE, chatMessage);
+        this.chatProcessor.pushData(gameId, chatMessage);
       } else {
         // 죽은 사람의 채팅은 죽은 사람끼리만 볼 수 있도록 처리
         const players = await this.redis.smembers(REDIS_KEY.ROOM_PLAYERS(gameId));
