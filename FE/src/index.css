@@ -1,16 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap');
-@font-face {
-  font-family: 'NPSfontBold';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontBold.woff2')
-    format('woff2');
-  font-weight: 700;
-  font-style: bold;
-}
 
 @font-face {
-  font-family: 'NPSfontBold';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontRegular.woff2')
-    format('woff2');
+  font-family: 'CookieRun-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff')
+    format('woff');
   font-weight: 400;
   font-style: normal;
 }
@@ -28,9 +21,9 @@
 
 @layer base {
   html {
-    font-family: 'NPSfontBold', 'Noto Color Emoji', ui-sans-serif, system-ui;
+    font-family: 'CookieRun-Regular', 'Noto Color Emoji', ui-sans-serif, system-ui;
     box-sizing: border-box;
-    color: #5f6e76;
+    color: #687880;
   }
   *,
   *::before,

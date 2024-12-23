@@ -34,9 +34,9 @@ const ParticipantDisplay: React.FC<ParticipantDisplayProps> = ({ gameState }) =>
             className="flex justify-between mt-2 pb-2 border-b border-default items-center"
             key={player.playerId}
           >
-            <div className="font-bold">{player.emoji + ' ' + player.playerName} </div>
+            <div className="flex-1 truncate">{player.emoji + ' ' + player.playerName} </div>
             {player.isHost && (
-              <span className="text-white bg-red-600 px-2 py-1 rounded-lg shadow-sm text-sm ml-3">
+              <span className=" text-white bg-red-600 px-2 py-1 rounded-lg shadow-sm text-sm ml-3">
                 방장 👑
               </span>
             )}
@@ -68,7 +68,7 @@ const ParticipantDisplay: React.FC<ParticipantDisplayProps> = ({ gameState }) =>
               layout
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             >
-              <div className="font-bold">{player.emoji + ' ' + player.playerName}</div>
+              <div className="flex-1 truncate">{player.emoji + ' ' + player.playerName}</div>
               <motion.div
                 initial={{ scale: 1 }}
                 animate={{ scale: 1.1 }}
@@ -103,7 +103,7 @@ const ParticipantDisplay: React.FC<ParticipantDisplayProps> = ({ gameState }) =>
               layout
               transition={{ type: 'spring', stiffness: 100, damping: 20 }}
             >
-              <div className="font-bold" style={{ color: player.isAnswer ? 'inherit' : 'red' }}>
+              <div className="truncate" style={{ color: player.isAnswer ? 'inherit' : 'red' }}>
                 {(player.isAnswer ? player.emoji : '👻') + ' ' + player.playerName}
               </div>
             </motion.div>

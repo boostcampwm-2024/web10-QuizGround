@@ -126,11 +126,11 @@ type UpdateHostResponse = {
 export type SocketDataMap = {
   chatMessage: {
     request: ChatMessageRequest;
-    response: ChatMessageResponse;
+    response: ChatMessageResponse | ChatMessageResponse[];
   };
   updatePosition: {
     request: UpdatePositionRequest;
-    response: UpdatePositionResponse;
+    response: UpdatePositionResponse | UpdatePositionResponse[];
   };
   createRoom: {
     request: null;

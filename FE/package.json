@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc -b && NODE_ENV=production vite build",
-    "build-dev": "tsc -b && NODE_ENV=development vite build",
+    "build": "tsc -b && cross-env NODE_ENV=production vite build",
+    "build-dev": "tsc -b && cross-env NODE_ENV=development vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -32,6 +32,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

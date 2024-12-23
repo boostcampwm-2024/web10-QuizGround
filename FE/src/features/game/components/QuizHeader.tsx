@@ -12,7 +12,6 @@ export const QuizHeader = () => {
   const [seconds, setSeconds] = useState(0);
   const [isAnswerVisible, setIsAnswerVisible] = useState(false);
   const [limitTime, setLimitTime] = useState(0);
-  const answer = useQuizStore((state) => state.currentAnswer);
   useEffect(() => {
     if (currentQuiz) {
       setSeconds((currentQuiz.endTime - getServerTimestamp()) / 1000);
@@ -71,11 +70,7 @@ export const QuizHeader = () => {
       <div className="flex justify-center items-center font-bold text-2xl flex-grow">
         {'Q. ' + currentQuiz.quiz}
       </div>
-      <AnswerModal
-        isOpen={isAnswerVisible}
-        // onClose={() => setIsAnswerVisible(false)}
-        answer={answer}
-      />
+      <AnswerModal isOpen={isAnswerVisible} />
     </div>
   );
 };

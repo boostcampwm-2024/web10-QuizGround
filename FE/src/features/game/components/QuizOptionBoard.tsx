@@ -134,7 +134,7 @@ export const QuizOptionBoard = () => {
         {choiceListVisible &&
           choiceList.map((option, i) => (
             <div
-              className={'rounded-lg flex justify-center items-center w-[100%] h-[100%]'}
+              className={'rounded-lg relative w-[100%] h-[100%] overflow-hidden'}
               key={i}
               style={{
                 background: optionColors[i],
@@ -151,7 +151,9 @@ export const QuizOptionBoard = () => {
                 textShadow: '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white'
               }}
             >
-              <div className="z-10 font-bold text-3xl text-black">{option.content}</div>
+              <div className="absolute inset-0 flex items-center justify-center text-center z-10 font-bold text-3xl text-black break-all p-4">
+                {option.content}
+              </div>
             </div>
           ))}
       </div>

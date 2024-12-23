@@ -7,6 +7,7 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 const Chat = () => {
   const gameId = useRoomStore((state) => state.gameId);
   const currentPlayerId = usePlayerStore((state) => state.currentPlayerId);
+  const currentPlayerName = usePlayerStore((state) => state.currentPlayerName);
   const messages = useChatStore((state) => state.messages);
   const [inputValue, setInputValue] = useState('');
   const players = usePlayerStore((state) => state.players);
@@ -128,8 +129,8 @@ const Chat = () => {
         onScroll={handleScroll}
       >
         <div>
-          <div className="flex justify-center mb-4" key="1">
-            🎉 QuizGround에 오신 것을 환영합니다 🎉
+          <div className="flex justify-center mb-4 text-sm" key="1">
+            🎉 {currentPlayerName}님 환영합니다 🎉
           </div>
           {chatList}
           {myMessages.map((e, i) => (

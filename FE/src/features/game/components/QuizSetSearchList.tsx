@@ -87,7 +87,7 @@ const QuizSetSearchList = ({ onClick, search }: Params) => {
       {data?.pages.map((page) =>
         page?.data.map((e) => (
           <div
-            className="mb-2 rounded-m"
+            className="mb-2 rounded-m bg-white"
             onClick={() => {
               setSelectedQuizSet(e);
               onClick(e);

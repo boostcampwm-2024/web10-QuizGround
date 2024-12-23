@@ -1,18 +1,16 @@
-// import Lottie from 'lottie-react';
 import lottie from 'lottie-web';
-// import AnswerBg from '@/assets/lottie/answer_background.json';
 import AnswerBg from '@/assets/lottie/congrats.json';
 import { useEffect, useState, useRef } from 'react';
-import { useQuizStore } from '../data/store/useQuizStore';
+import { usePlayerStore } from '../data/store/usePlayerStore';
 
 type AnswerModalProps = {
   isOpen: boolean;
-  answer: number;
 };
 
-const AnswerModal: React.FC<AnswerModalProps> = ({ isOpen, answer }) => {
+const AnswerModal: React.FC<AnswerModalProps> = ({ isOpen }) => {
   const [countdown, setCountdown] = useState(3);
-  const currentQuiz = useQuizStore((state) => state.currentQuiz);
+  const isAnswer = usePlayerStore((state) => state.players.get(state.currentPlayerId)?.isAnswer);
+  const isAlive = usePlayerStore((state) => state.players.get(state.currentPlayerId)?.isAlive);
 
   useEffect(() => {
     if (isOpen) {
@@ -55,17 +53,7 @@ const AnswerModal: React.FC<AnswerModalProps> = ({ isOpen, answer }) => {
   if (!isOpen || countdown <= 0) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50 pointer-events-none">
-      {/* <Lottie
-        animationData={AnswerBg}
-        loop={true}
-        className="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none"
-        style={{
-          transform: 'scale(1.15)',
-          minWidth: '100vw',
-          minHeight: '100vh'
-        }}
-      /> */}
-      {
+      {isAnswer && (
         <div
           ref={effectRef}
           className="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none"
@@ -75,13 +63,16 @@ const AnswerModal: React.FC<AnswerModalProps> = ({ isOpen, answer }) => {
             minHeight: '100vh'
           }}
         />
-      }
+      )}
 
-      <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4 p-8">
-        <h2 className="text-4xl font-bold text-black">정답 공개</h2>
-        <p className="text-4xl text-black" style={{ marginBottom: '4rem' }}>
-          {currentQuiz?.choiceList.find((e) => e.order == answer)?.content}
-        </p>
+      <div className="relative z-10 flex flex-col items-center justify-center text-center space-y-4 p-8 text-6xl animate-popup">
+        {!isAlive ? (
+          <p className="text-green-500 [text-shadow:_0_0_4px_white]">정답 발표</p>
+        ) : isAnswer ? (
+          <p className="text-green-500 [text-shadow:_0_0_4px_white]">정답입니다</p>
+        ) : (
+          <p className="text-red-500 [text-shadow:_0_0_4px_black]">틀렸습니다</p>
+        )}
       </div>
     </div>
   );

@@ -10,7 +10,13 @@ import { getEmojiByUUID } from '../utils/emoji';
 
 // chat
 socketService.on('chatMessage', (data) => {
-  useChatStore.getState().addMessage(data);
+  if(Array.isArray(data)){
+    data.forEach((e)=>{
+      useChatStore.getState().addMessage(e);
+    })
+  }else{
+    useChatStore.getState().addMessage(data);
+  }
 });
 
 // player
@@ -34,7 +40,13 @@ socketService.on('joinRoom', (data) => {
 });
 
 socketService.on('updatePosition', (data) => {
-  usePlayerStore.getState().updatePlayerPosition(data.playerId, data.playerPosition);
+  if(Array.isArray(data)){
+    data.forEach((e)=>{
+      usePlayerStore.getState().updatePlayerPosition(e.playerId, e.playerPosition);
+    })
+  }else{
+    usePlayerStore.getState().updatePlayerPosition(data.playerId, data.playerPosition);
+  }
 });
 
 socketService.on('endQuizTime', (data) => {
